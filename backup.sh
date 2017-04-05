@@ -1,7 +1,12 @@
 #!/bin/bash
 set -u
-set -x
-. /root/.passphrase
+. ./passphrase
+#### Exit if .passphrase is not configured ###
+if [[ $DB_PASSWORD = "MY_SQL_ADMIN_PASSWORD" ]] ; then
+    echo "Please Modify .passphrase with your own values"
+    exit 
+fi
+##### setting up your backup folders
 Main_Dir=/backups
 Full_Dir=/pgp-full
 Mysql_Dir=/mysql
