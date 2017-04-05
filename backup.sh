@@ -50,7 +50,7 @@ fi
 ######### Delete Oldest mysql backup if backup count is more than 30 backups### 
 if [[ $(/opt/Dropbox-Uploader/dropbox_uploader.sh list ${Main_DB_Dir}${Mysql_DB_Dir} | grep dump* |cut -d " " -f4 | wc -l) -gt ${DB_Backup_Count}  ]]
 then
-	echo "there is more than 30 mysql backups"
+	echo "there is more than ${DB_Backup_Count} mysql backups"
         echo "delete Oldest backup"
 	/opt/Dropbox-Uploader/dropbox_uploader.sh delete ${Main_DB_Dir}${Mysql_DB_Dir}/$(/opt/Dropbox-Uploader/dropbox_uploader.sh list ${Main_DB_Dir}${Mysql_DB_Dir} | grep dump* |cut -d " " -f4 | head -1)
 fi
@@ -59,7 +59,7 @@ fi
 ########## Delete Oldest full  bakcup if full backup count is more than 15 #### 
 if [[ $(/opt/Dropbox-Uploader/dropbox_uploader.sh list ${Main_DB_Dir}${Full_DB_Dir} | grep full_.*tar |cut -d " " -f4 | wc -l) -gt ${Full_Backup_Count} ]]
 then
-	echo "there is more than 15 backups"
+	echo "there is more than ${Full_Backup_Count} backups"
         echo "delete Oldest backup"
 	/opt/Dropbox-Uploader/dropbox_uploader.sh delete ${Main_DB_Dir}${Full_DB_Dir}/$(/opt/Dropbox-Uploader/dropbox_uploader.sh list ${Main_DB_Dir}${Full_DB_Dir} | grep full_.*tar |cut -d " " -f4 | head -1)
 fi
