@@ -8,7 +8,8 @@ if [[ $DB_PASSWORD = "MY_SQL_ADMIN_PASSWORD" ]] ; then
 fi
 ##### setting up your backup folders
 Main_Dir=/backups
-Full_Dir=/gpg-full
+Full_Backup_Dir=/gpg-full
+Full_Dir=${Full_Backup_Dir}
 Mysql_Dir=/mysql
 Main_DB_Dir=/backups
 Full_DB_Dir=/gpg-full
@@ -16,12 +17,12 @@ Mysql_DB_Dir=/mysql
 Full_Backup_Count=10
 DB_Backup_Count=30
 ########## Ensuring Backup Local folders exist #################3
-if [[ ! -d ${Main_Dir}{Full_Backup} ]] ; then 
-    echo "${Main_Dir}{Full_Backup} not found"
+if [[ ! -d ${Main_Dir}${Full_Dir} ]] ; then 
+    echo "${Main_Dir}${Full_Dir} not found"
     exit
 fi
-if [[ ! -d ${Main_Dir}{DB_Backup} ]] ; then
-    echo "${Main_Dir}{DB_Backup} not found "
+if [[ ! -d ${Main_Dir}${Mysql_Dir} ]] ; then
+    echo "${Main_Dir}${Mysql_Dir} not found "
     exit
 fi
 ###############################################################################
