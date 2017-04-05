@@ -1,0 +1,5 @@
+# Change values with your real stats
+PASSPHRASE="GPG_KEY_PASSWORD"
+DB_PASSWORD="MY_SQL_ADMIN_PASSWORD"
+Gpg_Key="GPG_KEY"
+
