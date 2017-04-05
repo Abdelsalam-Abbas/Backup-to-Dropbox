@@ -1,5 +1,5 @@
 # Change values with your real stats
-PASSPHRASE="GPG_KEY_PASSWORD"
-DB_PASSWORD="MY_SQL_ADMIN_PASSWORD"
-Gpg_Key="GPG_KEY"
+PASSPHRASE="GPG_KEY_PASSWORD" ### Key Passphrase used when created the key
+DB_PASSWORD="MY_SQL_ADMIN_PASSWORD" ### Database password
+Gpg_Key="GPG_KEY" ###your public ID key
 
