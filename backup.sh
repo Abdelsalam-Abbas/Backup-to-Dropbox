@@ -9,7 +9,6 @@ Main_DB_Dir=/backups
 Full_DB_Dir=/pgp-full
 Mysql_DB_Dir=/mysql
 Backup_Count=2
-Gpg_Key=C41E091B
 ###############################################################################
 ######## Creating DropBox Directories if it doesn't exist###################### 
 /opt/Dropbox-Uploader/dropbox_uploader.sh mkdir ${Main_DB_Dir}${Full_DB_Dir}
