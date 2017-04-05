@@ -16,6 +16,7 @@ Full_DB_Dir=/gpg-full
 Mysql_DB_Dir=/mysql
 Full_Backup_Count=10
 DB_Backup_Count=30
+Dropbox_Uploader=/opt/Dropbox-Uploader
 ########## Ensuring Backup Local folders exist #################3
 if [[ ! -d ${Main_Dir}${Full_Dir} ]] ; then 
     echo "${Main_Dir}${Full_Dir} not found"
@@ -27,8 +28,8 @@ if [[ ! -d ${Main_Dir}${Mysql_Dir} ]] ; then
 fi
 ###############################################################################
 ######## Creating DropBox Directories if it doesn't exist###################### 
-/opt/Dropbox-Uploader/dropbox_uploader.sh mkdir ${Main_DB_Dir}${Full_DB_Dir}
-/opt/Dropbox-Uploader/dropbox_uploader.sh mkdir ${Main_DB_Dir}${Mysql_DB_Dir}
+${Dropbox_Uploader}/dropbox_uploader.sh mkdir ${Main_DB_Dir}${Full_DB_Dir}
+${Dropbox_Uploader}/dropbox_uploader.sh mkdir ${Main_DB_Dir}${Mysql_DB_Dir}
 
 ###############################################################################
 ######## Creating full mysql backup ###########################################
@@ -40,7 +41,7 @@ if [[ $(ls -1 ${Main_Dir}${Mysql_Dir} | wc -l ) -gt ${DB_Backup_Count} ]]; then
 fi
 
 #### upload current backups to DropBox
-/opt/Dropbox-Uploader/dropbox_uploader.sh -s upload  ${Main_Dir}${Mysql_Dir}/* ${Main_DB_Dir}${Mysql_DB_Dir}
+${Dropbox_Uploader}/dropbox_uploader.sh -s upload  ${Main_Dir}${Mysql_Dir}/* ${Main_DB_Dir}${Mysql_DB_Dir}
 
 ###############################################################################
 ######## Creating full filesystem gpg backup ##################################
@@ -54,22 +55,22 @@ if [[ $(ls -1 ${Main_Dir}${Full_Dir} | wc -l ) -gt ${Full_Backup_Count} ]]; then
 fi
 
 #### upload current backups to DropBox
-/opt/Dropbox-Uploader/dropbox_uploader.sh -s upload  ${Main_Dir}${Full_Dir}/* ${Main_Dir}${Full_DB_Dir}
+${Dropbox_Uploader}/dropbox_uploader.sh -s upload  ${Main_Dir}${Full_Dir}/* ${Main_Dir}${Full_DB_Dir}
 
 ###############################################################################
 ######### Delete Oldest mysql backup if backup count is more than 30 backups### 
-if [[ $(/opt/Dropbox-Uploader/dropbox_uploader.sh list ${Main_DB_Dir}${Mysql_DB_Dir} | grep dump* |cut -d " " -f4 | wc -l) -gt ${DB_Backup_Count}  ]]
+if [[ $(${Dropbox_Uploader}/dropbox_uploader.sh list ${Main_DB_Dir}${Mysql_DB_Dir} | grep dump* |cut -d " " -f4 | wc -l) -gt ${DB_Backup_Count}  ]]
 then
     echo "there is more than ${DB_Backup_Count} mysql backups"
     echo "delete Oldest backup"
-    /opt/Dropbox-Uploader/dropbox_uploader.sh delete ${Main_DB_Dir}${Mysql_DB_Dir}/$(/opt/Dropbox-Uploader/dropbox_uploader.sh list ${Main_DB_Dir}${Mysql_DB_Dir} | grep dump* |cut -d " " -f4 | head -1)
+    ${Dropbox_Uploader}/dropbox_uploader.sh delete ${Main_DB_Dir}${Mysql_DB_Dir}/$(${Dropbox_Uploader}/dropbox_uploader.sh list ${Main_DB_Dir}${Mysql_DB_Dir} | grep dump* |cut -d " " -f4 | head -1)
 fi
 
 ###############################################################################
 ########## Delete Oldest full  bakcup if full backup count is more than 15 #### 
-if [[ $(/opt/Dropbox-Uploader/dropbox_uploader.sh list ${Main_DB_Dir}${Full_DB_Dir} | grep full_.*tar |cut -d " " -f4 | wc -l) -gt ${Full_Backup_Count} ]]
+if [[ $(${Dropbox_Uploader}/dropbox_uploader.sh list ${Main_DB_Dir}${Full_DB_Dir} | grep full_.*tar |cut -d " " -f4 | wc -l) -gt ${Full_Backup_Count} ]]
 then
     echo "there is more than ${Full_Backup_Count} backups"
     echo "delete Oldest backup"
-    /opt/Dropbox-Uploader/dropbox_uploader.sh delete ${Main_DB_Dir}${Full_DB_Dir}/$(/opt/Dropbox-Uploader/dropbox_uploader.sh list ${Main_DB_Dir}${Full_DB_Dir} | grep full_.*tar |cut -d " " -f4 | head -1)
+    ${Dropbox_Uploader}/dropbox_uploader.sh delete ${Main_DB_Dir}${Full_DB_Dir}/$(${Dropbox_Uploader}/dropbox_uploader.sh list ${Main_DB_Dir}${Full_DB_Dir} | grep full_.*tar |cut -d " " -f4 | head -1)
 fi
