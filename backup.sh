@@ -1,9 +1,9 @@
 #!/bin/bash
 set -u
-. ./passphrase
+. ./.passphrase
 #### Exit if .passphrase is not configured ###
 if [[ $DB_PASSWORD = "MY_SQL_ADMIN_PASSWORD" ]] ; then
-    echo "Please Modify .passphrase with your own values"
+    echo "[Error] Please Modify .passphrase with your own values"
     exit 
 fi
 ##### setting up your backup folders
@@ -39,7 +39,7 @@ rm -rf ${Main_Dir}${Full_Dir}/duplicity*
 
 #### delete local backups if exceed Backup_Count
 if [[ $(ls -1 ${Main_Dir}${Full_Dir} | wc -l ) -gt ${Backup_Count} ]]; then
-    rm -rf ${Main_Dir}${Mysql_Dir}/$(ls -1 ${Main_Dir}${Full_Dir} | head -1 )
+    rm -rf ${Main_Dir}${Full_Dir}/$(ls -1 ${Main_Dir}${Full_Dir} | head -1 )
 fi
 
 #### upload current backups to DropBox
