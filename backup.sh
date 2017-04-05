@@ -13,7 +13,8 @@ Mysql_Dir=/mysql
 Main_DB_Dir=/backups
 Full_DB_Dir=/pgp-full
 Mysql_DB_Dir=/mysql
-Backup_Count=2
+Full_Backup_Count=10
+DB_Backup_Count=30
 ###############################################################################
 ######## Creating DropBox Directories if it doesn't exist###################### 
 /opt/Dropbox-Uploader/dropbox_uploader.sh mkdir ${Main_DB_Dir}${Full_DB_Dir}
@@ -23,8 +24,8 @@ Backup_Count=2
 ######## Creating full mysql backup ###########################################
 mysqldump --all-databases > ${Main_Dir}${Mysql_Dir}/dump-$( date '+%Y-%m-%d_%H-%M-%S' ).sql -u root -p${DB_PASSWORD}
 
-#### delete local backups if exceed Backup_Count
-if [[ $(ls -1 ${Main_Dir}${Mysql_Dir} | wc -l ) -gt ${Backup_Count} ]]; then
+#### delete local backups if exceed DB_Backup_Count
+if [[ $(ls -1 ${Main_Dir}${Mysql_Dir} | wc -l ) -gt ${DB_Backup_Count} ]]; then
     rm -rf ${Main_Dir}${Mysql_Dir}/$(ls -1 ${Main_Dir}${Mysql_Dir} | head -1 )
 fi
 
@@ -38,7 +39,7 @@ tar -rvf ${Main_Dir}${Full_Dir}/full_$(date '+%Y-%m-%d_%H-%M-%S').tar ${Main_Dir
 rm -rf ${Main_Dir}${Full_Dir}/duplicity*
 
 #### delete local backups if exceed Backup_Count
-if [[ $(ls -1 ${Main_Dir}${Full_Dir} | wc -l ) -gt ${Backup_Count} ]]; then
+if [[ $(ls -1 ${Main_Dir}${Full_Dir} | wc -l ) -gt ${Full_Backup_Count} ]]; then
     rm -rf ${Main_Dir}${Full_Dir}/$(ls -1 ${Main_Dir}${Full_Dir} | head -1 )
 fi
 
@@ -47,7 +48,7 @@ fi
 
 ###############################################################################
 ######### Delete Oldest mysql backup if backup count is more than 30 backups### 
-if [[ $(/opt/Dropbox-Uploader/dropbox_uploader.sh list ${Main_DB_Dir}${Mysql_DB_Dir} | grep dump* |cut -d " " -f4 | wc -l) -gt ${Backup_Count}  ]]
+if [[ $(/opt/Dropbox-Uploader/dropbox_uploader.sh list ${Main_DB_Dir}${Mysql_DB_Dir} | grep dump* |cut -d " " -f4 | wc -l) -gt ${DB_Backup_Count}  ]]
 then
 	echo "there is more than 30 mysql backups"
         echo "delete Oldest backup"
@@ -56,7 +57,7 @@ fi
 
 ###############################################################################
 ########## Delete Oldest full  bakcup if full backup count is more than 15 #### 
-if [[ $(/opt/Dropbox-Uploader/dropbox_uploader.sh list ${Main_DB_Dir}${Full_DB_Dir} | grep full_.*tar |cut -d " " -f4 | wc -l) -gt ${Backup_Count} ]]
+if [[ $(/opt/Dropbox-Uploader/dropbox_uploader.sh list ${Main_DB_Dir}${Full_DB_Dir} | grep full_.*tar |cut -d " " -f4 | wc -l) -gt ${Full_Backup_Count} ]]
 then
 	echo "there is more than 15 backups"
         echo "delete Oldest backup"
