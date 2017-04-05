@@ -34,7 +34,7 @@ fi
 ###############################################################################
 ######## Creating full filesystem pgp backup ##################################
 duplicity --encrypt-key ${Gpg_Key} --exclude /bin --exclude /boot --exclude /dev --exclude /lib --exclude /lib64 --exclude /media --exclude /mnt --exclude /proc --exclude /run --exclude /sbin --exclude /srv --exclude /sys --exclude /tmp --exclude /usr --exclude ${Main_Dir} / file://${Main_Dir}${Full_Dir}
-tar -rvf ${Main_Dir}${Full_Dir}/full_$(date '+%Y-%m-%d_%H-%M-%S').tar ${Main_Dir}${Full_Dir}
+tar -rvf ${Main_Dir}${Full_Dir}/full_$(date '+%Y-%m-%d_%H-%M-%S').tar ${Main_Dir}${Full_Dir}/duplicity*
 rm -rf ${Main_Dir}${Full_Dir}/duplicity*
 
 #### delete local backups if exceed Backup_Count
